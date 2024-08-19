@@ -1,29 +1,37 @@
-# task 1
-hotel_rooms = {
-    "101": {"status": "available", "customer": ""},
-    "102": {"status": "booked", "customer": "John Doe"}
+# Initial service tickets
+service_tickets = {
+    "Ticket001": {"Customer": "Alice", "Issue": "Login problem", "Status": "open"},
+    "Ticket002": {"Customer": "Bob", "Issue": "Payment issue", "Status": "closed"}
 }
-class Hotel:
-    def __init__(self, total_rooms):
-        self.total_rooms = total_rooms
-        self.booked_rooms = dict()
 
-    def is_available(self, room_number):
-        if room_number in self.booked_rooms.keys(): 
-            return False
-        else:
-            return True
+# Function to open a new service ticket
+def open_ticket(ticket_id, customer, issue, status="open"):
+    if ticket_id in service_tickets:
+        print(f"Ticket ID {ticket_id} already exists.")
+    else:
+        service_tickets[ticket_id] = {"Customer": customer, "Issue": issue, "Status": status}
+        print(f"Ticket ID {ticket_id} opened successfully.")
 
-    def book_room(self, room_number, user_name):
-        if self.is_available(room_number):
-            self.booked_rooms[room_number] = user_name
-        else:
-            print("Sorry, the room is already booked.")
+# Function to update the status of an existing ticket
+def update_ticket_status(ticket_id, new_status):
+    if ticket_id in service_tickets:
+        service_tickets[ticket_id]["Status"] = new_status
+        print(f"Ticket ID {ticket_id} status updated to {new_status}.")
+    else:
+        print(f"Ticket ID {ticket_id} not found.")
 
-    def display_booked_rooms(self):
-        for room_number, user_name in self.booked_rooms.items():
-            print(f"Room Number: {room_number},  Booked By: {user_name}")
+# Function to display all tickets or filter by status
+def display_tickets(status=None):
+    for ticket_id, details in service_tickets.items():
+        if status is None or details["Status"] == status:
+            print(f"ID: {ticket_id}")
+            print(f"  Customer: {details['Customer']}")
+            print(f"  Issue: {details['Issue']}")
+            print(f"  Status: {details['Status']}")
+            print()
 
-    def display_user_bookings(self, user_name):
-        user_rooms = [room for room, user in self.booked_rooms.items() if user == user_name]
-        print(f"User {user_name} booked rooms {user_rooms}")
+# Example usage
+open_ticket("Ticket003", "Charlie", "Network issue")
+update_ticket_status("Ticket001", "closed")
+display_tickets()  # Display all tickets
+display_tickets("open")  # Display only open tickets
